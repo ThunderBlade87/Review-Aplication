@@ -29,11 +29,23 @@ def export_to_word_title(ticket_number, assignee, reviewer, dt_string):
 def export_to_word():
     input_text1 = text1.get("1.0", "end-1c")
     input_text2 = text2.get("1.0", "end-1c")
+    input_text3 = text3.get("1.0", "end-1c")
+
+    def on_entry_click():
+        if text1.get("1.0", tk.END).strip() == "Introduceți textul aici":
+            text1.delete("1.0", tk.END)
+            text1.config(foreground="black")
+
+    def on_focus_out():
+        if text1.get("1.0", tk.END).strip() == "":
+            text1.insert("1.0", "Introduceți textul aici")
+            text1.config(foreground="gray")
 
     document = Document("output.docx")
     #document.add_section(WD_SECTION.NEW_PAGE)
     document.add_paragraph(f"Text1: {input_text1}")
     document.add_paragraph(f"Text2: {input_text2}")
+    document.add_paragraph(f"Text3: {input_text3}")
     document.save("output.docx")
 
     messagebox.showinfo("Pop-up", "Text a fost exportat în fișierul output.docx")
@@ -57,6 +69,9 @@ def open_popup():
 
     entry1 = tk.Entry(popup)
     entry1.pack()
+    entry1.focus()
+
+    entry1.insert(0, "GMCTC-")
 
     popup_label = tk.Label(popup, text="Assignee:")
     popup_label.pack()
@@ -77,17 +92,23 @@ window = tk.Tk()
 window.geometry("500x500")  # Setarea dimensiunilor ferestrei
 #window.resizable(False, False)
 
-label1 = tk.Label(window, text="Problem")
-label1.pack(anchor="w")
+label = tk.Label(window, text="Remark found in variant: ")
+label.pack(anchor="w")
 
 text1 = tk.Text(window, width=0,height=0,borderwidth =7)
-text1.pack(anchor="w",fill="both", expand=True)
+text1.pack(anchor="w",fill="x")
 
-label2 = tk.Label(window, text="Solution")
-label2.pack(anchor="w")
+label = tk.Label(window, text="Remark found in file:")
+label.pack(anchor="w")
 
 text2 = tk.Text(window, width=0,height=0,borderwidth =7)
-text2.pack(anchor="w",fill="both", expand=True)
+text2.pack(anchor="w",fill="x")
+
+label = tk.Label(window, text="Remark")
+label.pack(anchor="w")
+
+text3 = tk.Text(window, width=0,height=0,borderwidth =7)
+text3.pack(anchor="w",fill="both", expand=True)
 
 button = tk.Button(window, text="Export to Word", command=export_to_word)
 button.pack(anchor="c")
