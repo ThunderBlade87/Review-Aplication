@@ -2,3 +2,4 @@
 Tkinter
 Os
 Docx
+tkinterdnd2
