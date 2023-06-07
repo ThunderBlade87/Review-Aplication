@@ -1,8 +1,10 @@
 import tkinter as tk
 import os
-from tkinter import messagebox
+from tkinter import messagebox, TOP, Entry, Label, StringVar
+from tkinterdnd2 import *
 from docx import Document
 from docx.enum.section import WD_SECTION
+from docx.shared import Inches
 from datetime import datetime
 
 if os.path.isfile("output.docx"):
@@ -11,6 +13,17 @@ else:
     document = Document()
     document.save("output.docx")
 
+def get_path(event):
+    imagine=pathLabel.configure(text = event.data)
+    '''
+    document = Document("output.docx")
+    p = document.add_paragraph()
+    r = p.add_run()
+    r.add_text('Good Morning every body,This is my ')
+    r.add_picture(imagine)
+    r.add_text(' do you like it?')
+    document.save("output.docx")
+    '''
 def export_to_word_title(ticket_number, assignee, reviewer, dt_string):
     input_ticket_number= ticket_number
     input_assignee = assignee
@@ -30,7 +43,7 @@ def export_to_word():
     input_text1 = text1.get("1.0", "end-1c")
     input_text2 = text2.get("1.0", "end-1c")
     input_text3 = text3.get("1.0", "end-1c")
-
+    '''
     def on_entry_click():
         if text1.get("1.0", tk.END).strip() == "Introduceți textul aici":
             text1.delete("1.0", tk.END)
@@ -40,12 +53,19 @@ def export_to_word():
         if text1.get("1.0", tk.END).strip() == "":
             text1.insert("1.0", "Introduceți textul aici")
             text1.config(foreground="gray")
-
+    '''
     document = Document("output.docx")
     #document.add_section(WD_SECTION.NEW_PAGE)
     document.add_paragraph(f"Text1: {input_text1}")
     document.add_paragraph(f"Text2: {input_text2}")
     document.add_paragraph(f"Text3: {input_text3}")
+    ''''
+    p = document.add_paragraph()
+    r = p.add_run()
+    r.add_text('Good Morning every body,This is my ')
+    r.add_picture('/tmp/foo.jpg')
+    r.add_text(' do you like it?')
+    '''
     document.save("output.docx")
 
     messagebox.showinfo("Pop-up", "Text a fost exportat în fișierul output.docx")
@@ -88,7 +108,8 @@ def open_popup():
     popup_button = tk.Button(popup, text="Export to Word", command=on_popup_close)
     popup_button.pack()
 
-window = tk.Tk()
+#window = tk.Tk()
+window = TkinterDnD.TixTk()
 window.geometry("500x500")  # Setarea dimensiunilor ferestrei
 #window.resizable(False, False)
 
@@ -109,6 +130,17 @@ label.pack(anchor="w")
 
 text3 = tk.Text(window, width=0,height=0,borderwidth =7)
 text3.pack(anchor="w",fill="both", expand=True)
+
+nameVar = StringVar()
+
+entryWidget = Entry(window)
+entryWidget.pack(side=TOP, padx=5, pady=5)
+
+pathLabel = Label(window, text="Drag and drop file in the entry box")
+pathLabel.pack(side=TOP)
+
+entryWidget.drop_target_register(DND_ALL)
+entryWidget.dnd_bind("<<Drop>>", get_path)
 
 button = tk.Button(window, text="Export to Word", command=export_to_word)
 button.pack(anchor="c")
