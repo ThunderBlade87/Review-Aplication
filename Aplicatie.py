@@ -17,12 +17,18 @@ if not os.path.isfile("output.docx"):
     document = Document()
     document.save("output.docx")
 
+
 def add_image_checkbox():
     global entryWidget
     global pathLabel
     global file_name
-
+    global button
+    global popup_button
     if (var1.get()) == 1:
+        if button is not None:
+            button.pack_forget()
+        if popup_button is not None:
+            popup_button.pack_forget()
         entryWidget = Entry(window)
         entryWidget.pack(anchor="w", padx=5, pady=5)
 
@@ -32,10 +38,17 @@ def add_image_checkbox():
         entryWidget.drop_target_register(DND_ALL)
         entryWidget.dnd_bind("<<Drop>>", get_image_path)
         #window.update()
+        button = tk.Button(window, text="Export to Word", command=export_to_word)
+        button.pack(anchor="c")
+
+        popup_button = tk.Button(window, text="Open Pop-up", command=open_popup)
+        popup_button.pack(anchor="c")
 
     else:
-        entryWidget.pack_forget()
-        pathLabel.pack_forget()
+        if entryWidget is not None:
+            entryWidget.pack_forget()
+        if pathLabel is not None:
+            pathLabel.pack_forget()
         file_name = " "
         #window.update()
 '''
@@ -178,6 +191,9 @@ window = TkinterDnD.TixTk()
 window.geometry("500x500")
 #window.resizable(False, False)
 var1 = tk.IntVar()
+#var2 = tk.IntVar()
+#checkbox1 = tk.Checkbutton(window, text='Add variant',variable=var2, onvalue=1, offvalue=0, command = add_variant_checkbox)
+#checkbox1.pack(anchor ="w", padx= 0, pady=0)
 
 label = tk.Label(window, text="Remark found in variant: ")
 label.pack(anchor="w")
@@ -197,8 +213,8 @@ label.pack(anchor="w")
 text3 = tk.Text(window, width=0,height=0,borderwidth =7)
 text3.pack(anchor="w",fill="both", expand=True)
 
-checkbox = tk.Checkbutton(window, text='Add Image',variable=var1, onvalue=1, offvalue=0, command = add_image_checkbox)
-checkbox.pack(anchor ="w", padx= 0, pady=0)
+checkbox4 = tk.Checkbutton(window, text='Add Image',variable=var1, onvalue=1, offvalue=0, command = add_image_checkbox)
+checkbox4.pack(anchor ="w", padx= 0, pady=0)
 
 button = tk.Button(window, text="Export to Word", command=export_to_word)
 button.pack(anchor="c")
