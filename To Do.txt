@@ -1,0 +1,9 @@
+Light/Dark Mode
+Drag image from clipboard
+If path format is the same do 1.Remark 2.Remark 3.Remark...
+Fix Bug if no image path do nothing
+ReOpen and edit old ramarks
+Add checkmarks
+Make new word documents every time when you have a new ticket
+
+
